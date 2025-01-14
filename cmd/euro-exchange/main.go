@@ -16,4 +16,8 @@ func main() {
 		"app_name": "euro-exchange",
 		"message":  "app start",
 	})
+
+	app := src.NewApp(cfg, logger)
+
+	app.Run()
 }
