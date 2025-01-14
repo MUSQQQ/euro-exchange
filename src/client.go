@@ -11,6 +11,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const expectedContentType = "application/json; charset=utf-8"
+
 type client struct {
 	url        string
 	httpClient http.Client
@@ -51,7 +53,7 @@ func (c *client) getExchangeRate() (any, error) {
 	c.logger.Log(logrus.InfoLevel, logrus.Fields{
 		"time_elapsed": timeElapsed,
 		"status_code":  rsp.StatusCode,
-		"is_json":      isJSON(rsp.Header.Get("Content-Type")),
+		"is_json":      rsp.Header.Get("Content-Type") == expectedContentType,
 		"is_valid":     c.validator.validate(body),
 	})
 
