@@ -61,8 +61,8 @@ func newValidator() *validator {
 	}
 }
 
-func (v *validator) validate(body map[string]interface{}) bool {
-	documentLoader := gojsonschema.NewGoLoader(body)
+func (v *validator) validate(rates *ExchangeRates) bool {
+	documentLoader := gojsonschema.NewGoLoader(rates)
 
 	result, err := gojsonschema.Validate(v.schema, documentLoader)
 	if err != nil {
