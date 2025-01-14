@@ -13,11 +13,15 @@ import (
 
 const expectedContentType = "application/json; charset=utf-8"
 
+// mockgen -source=client.go -destination=./mocks/client_mock.go
+type Client interface {
+	GetExchangeRate() (*ExchangeRates, error)
+}
+
 type client struct {
 	url        string
 	httpClient http.Client
 	logger     *Logger
-	validator  *validator
 }
 
 func newClient(cfg *config.Config, logger *Logger) *client {
@@ -25,11 +29,10 @@ func newClient(cfg *config.Config, logger *Logger) *client {
 		url:        cfg.ExchangeURL,
 		httpClient: *http.DefaultClient,
 		logger:     logger,
-		validator:  newValidator(),
 	}
 }
 
-func (c *client) getExchangeRate() (*ExchangeRates, error) {
+func (c *client) GetExchangeRate() (*ExchangeRates, error) {
 	req, err := http.NewRequest("GET", c.url, nil)
 	if err != nil {
 		return nil, err
@@ -46,8 +49,8 @@ func (c *client) getExchangeRate() (*ExchangeRates, error) {
 	}
 
 	decoder := json.NewDecoder(rsp.Body)
-	rates := &ExchangeRates{}
-	err = decoder.Decode(rates)
+	var rates *ExchangeRates
+	err = decoder.Decode(&rates)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +59,7 @@ func (c *client) getExchangeRate() (*ExchangeRates, error) {
 		"time_elapsed": timeElapsed,
 		"status_code":  rsp.StatusCode,
 		"is_json":      rsp.Header.Get("Content-Type") == expectedContentType,
-		"is_valid":     c.validator.validate(rates),
+		"is_valid":     rates.Validate() == nil,
 	})
 
 	return rates, nil

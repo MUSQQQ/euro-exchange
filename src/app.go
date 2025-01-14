@@ -10,7 +10,7 @@ import (
 )
 
 type App struct {
-	client *client
+	Client Client
 	logger *Logger
 	Sleep  time.Duration
 }
@@ -19,13 +19,13 @@ func NewApp(cfg *config.Config, logger *Logger) *App {
 
 	return &App{
 		logger: logger,
-		client: newClient(cfg, logger),
+		Client: newClient(cfg, logger),
 		Sleep:  time.Second * time.Duration(cfg.ChecksFrequency),
 	}
 }
 
 func (a *App) Run(ctx context.Context, wg *sync.WaitGroup) {
-	_, err := a.client.getExchangeRate()
+	_, err := a.Client.GetExchangeRate()
 	if err != nil {
 		a.logger.Log(logrus.WarnLevel, logrus.Fields{
 			"error": err,
@@ -35,7 +35,7 @@ func (a *App) Run(ctx context.Context, wg *sync.WaitGroup) {
 	ticker := time.Tick(a.Sleep)
 	select {
 	case <-ticker:
-		_, err := a.client.getExchangeRate()
+		_, err := a.Client.GetExchangeRate()
 		if err != nil {
 			a.logger.Log(logrus.WarnLevel, logrus.Fields{
 				"error":         "failed to get exchange rates",
@@ -52,7 +52,7 @@ func (a *App) Run(ctx context.Context, wg *sync.WaitGroup) {
 }
 
 func (a *App) CheckLastHundredDays() {
-	rates, err := a.client.getExchangeRate()
+	rates, err := a.Client.GetExchangeRate()
 	if err != nil {
 		a.logger.Log(logrus.ErrorLevel, logrus.Fields{
 			"error":         "failed to check last 100 days",
