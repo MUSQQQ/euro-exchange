@@ -50,3 +50,24 @@ func (a *App) Run(ctx context.Context, wg *sync.WaitGroup) {
 
 	}
 }
+
+func (a *App) CheckLastHundredDays() {
+	rates, err := a.client.getExchangeRate()
+	if err != nil {
+		a.logger.Log(logrus.ErrorLevel, logrus.Fields{
+			"error":         "failed to check last 100 days",
+			"error_message": err,
+		})
+	}
+	var validDates []string
+	for _, rate := range rates.Rates {
+		if rate.Mid < 4.2 || rate.Mid > 4.3 {
+			validDates = append(validDates, rate.Date)
+		}
+	}
+
+	a.logger.Log(logrus.InfoLevel, logrus.Fields{
+		"message": "last 100 dates with rates outside of 4.2-4.3 range",
+		"dates":   validDates,
+	})
+}

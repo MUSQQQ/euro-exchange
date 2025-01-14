@@ -29,11 +29,13 @@ func newClient(cfg *config.Config, logger *Logger) *client {
 	}
 }
 
-func (c *client) getExchangeRate() (any, error) {
+func (c *client) getExchangeRate() (*ExchangeRates, error) {
 	req, err := http.NewRequest("GET", c.url, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	// workaround to satisfy nbp API
 	req.Header.Set("User-Agent", uuid.NewString())
 
 	timeStart := time.Now()
@@ -44,8 +46,8 @@ func (c *client) getExchangeRate() (any, error) {
 	}
 
 	decoder := json.NewDecoder(rsp.Body)
-	var body map[string]interface{}
-	err = decoder.Decode(&body)
+	rates := &ExchangeRates{}
+	err = decoder.Decode(rates)
 	if err != nil {
 		return nil, err
 	}
@@ -54,8 +56,8 @@ func (c *client) getExchangeRate() (any, error) {
 		"time_elapsed": timeElapsed,
 		"status_code":  rsp.StatusCode,
 		"is_json":      rsp.Header.Get("Content-Type") == expectedContentType,
-		"is_valid":     c.validator.validate(body),
+		"is_valid":     c.validator.validate(rates),
 	})
 
-	return nil, nil
+	return rates, nil
 }

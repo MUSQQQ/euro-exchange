@@ -16,22 +16,24 @@ func main() {
 	logger := src.NewLogger(cfg)
 
 	logger.Log(logrus.InfoLevel, logrus.Fields{
-		"app_name": "euro-exchange",
-		"message":  "app start",
+		"message": "app start",
 	})
 
 	app := src.NewApp(cfg, logger)
 
+	if cfg.CheckLastHundredDays {
+		app.CheckLastHundredDays()
+	}
+
 	ticker := time.Tick(time.Duration(cfg.Timeout) * time.Second)
 
-	ctx := context.Background()
-	cancCtx, cancFunc := context.WithCancel(ctx)
+	ctx, cancFunc := context.WithCancel(context.Background())
 
 	wg := &sync.WaitGroup{}
 
 	for i := 0; i < cfg.ChecksNumber; i++ {
 		wg.Add(1)
-		go app.Run(cancCtx, wg)
+		go app.Run(ctx, wg)
 	}
 
 	<-ticker

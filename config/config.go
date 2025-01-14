@@ -7,10 +7,11 @@ import (
 )
 
 type Config struct {
-	ChecksNumber    int    `mapstructure:"X"`
-	ChecksFrequency int    `mapstructure:"Y"`
-	Timeout         int    `mapstructure:"TIMEOUT"`
-	ExchangeURL     string `mapstructure:"EXCHANGE_URL"`
+	ChecksNumber         int    `mapstructure:"X"`
+	ChecksFrequency      int    `mapstructure:"Y"`
+	Timeout              int    `mapstructure:"TIMEOUT"`
+	ExchangeURL          string `mapstructure:"EXCHANGE_URL"`
+	CheckLastHundredDays bool   `mapstructure:"CHECK_LAST_100_DAYS"`
 
 	LogFileName string `mapstructure:"LOG_FILE_NAME"`
 }
