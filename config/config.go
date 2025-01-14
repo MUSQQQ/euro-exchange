@@ -9,6 +9,7 @@ import (
 type Config struct {
 	ChecksNumber    int    `mapstructure:"X"`
 	ChecksFrequency int    `mapstructure:"Y"`
+	Timeout         int    `mapstructure:"TIMEOUT"`
 	ExchangeURL     string `mapstructure:"EXCHANGE_URL"`
 
 	LogFileName string `mapstructure:"LOG_FILE_NAME"`
