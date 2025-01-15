@@ -50,25 +50,20 @@ func TestApp(t *testing.T) {
 			},
 		}, nil)
 
-		wg := &sync.WaitGroup{}
-		wg.Add(1)
 		ctx, _ := context.WithTimeout(context.Background(), 1*time.Second)
-		app.Run(ctx, wg)
+		app.Run(ctx)
 
-		assert.Equal(t, 2, len(hook.Entries))
-		assert.Contains(t, hook.Entries[0].Message, "graceful runner shutdown")
+		assert.Equal(t, 0, len(hook.Entries))
 	})
 
 	t.Run("error getting exchange rates", func(t *testing.T) {
 		defer func() { hook.Entries = []logrus.Entry{} }()
 		client.EXPECT().GetExchangeRate().Return(nil, errors.New("test error"))
 
-		wg := &sync.WaitGroup{}
-		wg.Add(1)
 		ctx, _ := context.WithTimeout(context.Background(), 1*time.Second)
-		app.Run(ctx, wg)
+		app.Run(ctx)
 
-		assert.Equal(t, 4, len(hook.Entries))
+		assert.Equal(t, 2, len(hook.Entries))
 		assert.Contains(t, hook.Entries[0].Message, "test error")
 	})
 }

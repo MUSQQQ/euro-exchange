@@ -1,0 +1,14 @@
+do uruchomienia wymagana wersja GO >=1.22
+
+w celu uruchomienia:
+
+go run ./...
+
+lub
+
+make run-local
+
+
+w celue otrzymania informacji o ostatnich 100 dniach
+należy zmienić zmienną środowiskową CHECK_LAST_100_DAYS w config.env na true 
+i ponownie uruchomić program
