@@ -3,7 +3,6 @@ package src
 import (
 	"context"
 	"euro-exchange/config"
-	"sync"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -24,7 +23,7 @@ func NewApp(cfg *config.Config, logger *Logger) *App {
 	}
 }
 
-func (a *App) Run(ctx context.Context, wg *sync.WaitGroup) {
+func (a *App) Run(ctx context.Context) {
 	_, err := a.Client.GetExchangeRate()
 	if err != nil {
 		a.logger.Log(logrus.WarnLevel, logrus.Fields{
@@ -33,21 +32,19 @@ func (a *App) Run(ctx context.Context, wg *sync.WaitGroup) {
 	}
 
 	ticker := time.Tick(a.Sleep)
-	select {
-	case <-ticker:
-		_, err := a.Client.GetExchangeRate()
-		if err != nil {
-			a.logger.Log(logrus.WarnLevel, logrus.Fields{
-				"error":         "failed to get exchange rates",
-				"error_message": err,
-			})
+	for {
+		select {
+		case <-ticker:
+			_, err := a.Client.GetExchangeRate()
+			if err != nil {
+				a.logger.Log(logrus.WarnLevel, logrus.Fields{
+					"error":         "failed to get exchange rates",
+					"error_message": err,
+				})
+			}
+		case <-ctx.Done():
+			return
 		}
-	case <-ctx.Done():
-		a.logger.Log(logrus.InfoLevel, logrus.Fields{
-			"message": "graceful runner shutdown",
-		})
-		wg.Done()
-
 	}
 }
 
