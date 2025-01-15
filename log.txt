@@ -1,0 +1,11 @@
+{"level":"info","msg":"map[message:app start]","time":"2025-01-15T09:15:27.781055387Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:51.869289ms]","time":"2025-01-15T09:15:27.834951625Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:53.032928ms]","time":"2025-01-15T09:15:27.835295287Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:62.924926ms]","time":"2025-01-15T09:15:27.845288636Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:63.594624ms]","time":"2025-01-15T09:15:27.845831351Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:64.176633ms]","time":"2025-01-15T09:15:27.847093509Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:72.817999ms]","time":"2025-01-15T09:15:27.856409813Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:73.553944ms]","time":"2025-01-15T09:15:27.856465283Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:74.374101ms]","time":"2025-01-15T09:15:27.856487235Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:75.016524ms]","time":"2025-01-15T09:15:27.8566926Z"}
+{"level":"info","msg":"map[is_json:true is_valid:true status_code:200 time_elapsed:177.182714ms]","time":"2025-01-15T09:15:27.959430657Z"}

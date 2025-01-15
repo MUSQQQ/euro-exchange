@@ -1,12 +1,25 @@
-do uruchomienia potrzebna wersja GO >=1.23.4
+do uruchomienia potrzebna wersja GO >=1.23.4 lub Docker/Docker-Compose
 
 w celu uruchomienia:
+
+bezpośrednio:
 
 go run ./...
 
 lub
 
 make run-local
+
+przy użyciu Dockera (plik log.txt musi już istnieć):
+
+docker-compose -f docker-compose.yml up --build --force-recreate --remove-orphans
+
+lub
+
+make run-docker-local
+
+
+Konfiguracja:
 
 w celu zmiany czasu działania programu należy zmodyfikować zmienną TIMEOUT
 w pliku config.env
