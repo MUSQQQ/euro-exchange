@@ -21,7 +21,7 @@ func (r Rate) Validate() error {
 	return validation.ValidateStruct(
 		&r,
 		validation.Field(&r.Date, validation.Required),
-		validation.Field(&r.Date, validation.Required, validation.Date("2006-01-01")),
+		validation.Field(&r.Date, validation.Required, validation.Date("2006-01-02")),
 		validation.Field(&r.Mid, validation.Required, validation.Min(0.01)),
 	)
 }

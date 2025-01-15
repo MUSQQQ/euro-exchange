@@ -2,8 +2,9 @@ package src
 
 import (
 	"context"
-	"euro-exchange/config"
 	"time"
+
+	"euro-exchange/config"
 
 	"github.com/sirupsen/logrus"
 )
@@ -24,18 +25,18 @@ func NewApp(cfg *config.Config, logger *Logger) *App {
 }
 
 func (a *App) Run(ctx context.Context) {
-	_, err := a.Client.GetExchangeRate()
+	_, err := a.Client.GetExchangeRate(ctx)
 	if err != nil {
 		a.logger.Log(logrus.WarnLevel, logrus.Fields{
 			"error": err,
 		})
 	}
 
-	ticker := time.Tick(a.Sleep)
+	ticker := time.NewTicker(a.Sleep)
 	for {
 		select {
-		case <-ticker:
-			_, err := a.Client.GetExchangeRate()
+		case <-ticker.C:
+			_, err := a.Client.GetExchangeRate(ctx)
 			if err != nil {
 				a.logger.Log(logrus.WarnLevel, logrus.Fields{
 					"error":         "failed to get exchange rates",
@@ -48,8 +49,8 @@ func (a *App) Run(ctx context.Context) {
 	}
 }
 
-func (a *App) CheckLastHundredDays() {
-	rates, err := a.Client.GetExchangeRate()
+func (a *App) CheckLastHundredDays(ctx context.Context) {
+	rates, err := a.Client.GetExchangeRate(ctx)
 	if err != nil {
 		a.logger.Log(logrus.ErrorLevel, logrus.Fields{
 			"error":         "failed to check last 100 days",

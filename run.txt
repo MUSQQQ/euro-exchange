@@ -1,4 +1,4 @@
-do uruchomienia wymagana wersja GO >=1.22
+do uruchomienia potrzebna wersja GO >=1.23.4
 
 w celu uruchomienia:
 
@@ -8,7 +8,9 @@ lub
 
 make run-local
 
+w celu zmiany czasu działania programu należy zmodyfikować zmienną TIMEOUT
+w pliku config.env
 
-w celue otrzymania informacji o ostatnich 100 dniach
+w celu otrzymania informacji o ostatnich 100 dniach
 należy zmienić zmienną środowiskową CHECK_LAST_100_DAYS w config.env na true 
 i ponownie uruchomić program
