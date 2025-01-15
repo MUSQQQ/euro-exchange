@@ -3,11 +3,12 @@ package src_test
 import (
 	"context"
 	"errors"
-	"euro-exchange/config"
-	"euro-exchange/src"
 	"sync"
 	"testing"
 	"time"
+
+	"euro-exchange/config"
+	"euro-exchange/src"
 
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -31,8 +32,9 @@ func TestApp(t *testing.T) {
 	app.Client = client
 
 	t.Run("success run", func(t *testing.T) {
+		ctx, _ := context.WithTimeout(context.Background(), 3*time.Second)
 		defer func() { hook.Entries = []logrus.Entry{} }()
-		client.EXPECT().GetExchangeRate().Return(&src.ExchangeRates{
+		client.EXPECT().GetExchangeRate(ctx).Return(&src.ExchangeRates{
 			Table:    "a",
 			Currency: "euro",
 			Code:     "EUR",
@@ -50,17 +52,16 @@ func TestApp(t *testing.T) {
 			},
 		}, nil)
 
-		ctx, _ := context.WithTimeout(context.Background(), 1*time.Second)
 		app.Run(ctx)
 
 		assert.Equal(t, 0, len(hook.Entries))
 	})
 
 	t.Run("error getting exchange rates", func(t *testing.T) {
+		ctx, _ := context.WithTimeout(context.Background(), 3*time.Second)
 		defer func() { hook.Entries = []logrus.Entry{} }()
-		client.EXPECT().GetExchangeRate().Return(nil, errors.New("test error"))
+		client.EXPECT().GetExchangeRate(ctx).Return(nil, errors.New("test error"))
 
-		ctx, _ := context.WithTimeout(context.Background(), 1*time.Second)
 		app.Run(ctx)
 
 		assert.Equal(t, 2, len(hook.Entries))

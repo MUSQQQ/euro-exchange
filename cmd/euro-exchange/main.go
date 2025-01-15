@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"time"
+
 	"euro-exchange/config"
 	"euro-exchange/src"
-	"time"
 
 	"github.com/sirupsen/logrus"
 )
@@ -21,7 +22,7 @@ func main() {
 	app := src.NewApp(cfg, logger)
 
 	if cfg.CheckLastHundredDays {
-		app.CheckLastHundredDays()
+		app.CheckLastHundredDays(context.Background())
 	}
 
 	ticker := time.Tick(time.Duration(cfg.Timeout) * time.Second)

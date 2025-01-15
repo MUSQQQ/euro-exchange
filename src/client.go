@@ -1,6 +1,7 @@
 package src
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -15,7 +16,7 @@ const expectedContentType = "application/json; charset=utf-8"
 
 // mockgen -source=client.go -destination=./mocks/client_mock.go
 type Client interface {
-	GetExchangeRate() (*ExchangeRates, error)
+	GetExchangeRate(ctx context.Context) (*ExchangeRates, error)
 }
 
 type client struct {
@@ -32,8 +33,8 @@ func newClient(cfg *config.Config, logger *Logger) *client {
 	}
 }
 
-func (c *client) GetExchangeRate() (*ExchangeRates, error) {
-	req, err := http.NewRequest("GET", c.url, nil)
+func (c *client) GetExchangeRate(ctx context.Context) (*ExchangeRates, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", c.url, nil)
 	if err != nil {
 		return nil, err
 	}

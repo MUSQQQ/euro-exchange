@@ -10,6 +10,7 @@
 package src_test
 
 import (
+	context "context"
 	src "euro-exchange/src"
 	reflect "reflect"
 
@@ -41,16 +42,16 @@ func (m *MockClient) EXPECT() *MockClientMockRecorder {
 }
 
 // GetExchangeRate mocks base method.
-func (m *MockClient) GetExchangeRate() (*src.ExchangeRates, error) {
+func (m *MockClient) GetExchangeRate(ctx context.Context) (*src.ExchangeRates, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetExchangeRate")
+	ret := m.ctrl.Call(m, "GetExchangeRate", ctx)
 	ret0, _ := ret[0].(*src.ExchangeRates)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetExchangeRate indicates an expected call of GetExchangeRate.
-func (mr *MockClientMockRecorder) GetExchangeRate() *gomock.Call {
+func (mr *MockClientMockRecorder) GetExchangeRate(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetExchangeRate", reflect.TypeOf((*MockClient)(nil).GetExchangeRate))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetExchangeRate", reflect.TypeOf((*MockClient)(nil).GetExchangeRate), ctx)
 }
