@@ -59,8 +59,9 @@ func TestValidate(t *testing.T) {
 		{
 			name: "invalid rate",
 			input: &src.ExchangeRates{
-				Table: "a",
-				Code:  "EUR",
+				Table:    "a",
+				Currency: "euro",
+				Code:     "EUR",
 				Rates: []src.Rate{
 					{
 						No: "no-1",
